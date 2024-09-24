@@ -1,6 +1,5 @@
-import 'package:firebase/color.dart';
+import 'package:firebase/pages/Dashboard.dart';
 import 'package:flutter/material.dart';
-import 'package:anim_search_bar/anim_search_bar.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -18,61 +17,65 @@ class _SearchState extends State<Search> {
     super.dispose();
   }
 
+  void _handleSearch() {
+    String query = _textController.text.trim().toLowerCase(); // Convert query to lowercase
+    if (query.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DashboardPage(searchQuery: query), // Pass lowercase query
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-       return SafeArea(
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: primaryColor, // Set the background color here
+          backgroundColor: Colors.blue,
           automaticallyImplyLeading: false,
-          centerTitle: true, // Center the title
-          title: AnimSearchBar(
-            width: 400,
-             textController: _textController,
-             onSuffixTap: () {
-               setState(() {
-                 _textController.clear();
-               });
-            },
-            rtl: true,
-            onSubmitted: (String value) {
-            // handle search query submission
-            },
-           ),
+          centerTitle: true,
+          title: Container(
+            margin: const EdgeInsets.all(15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            height: 45,
+            width: 380,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.search, color: Colors.black),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: TextFormField(
+                    controller: _textController,
+                    decoration: const InputDecoration(
+                      hintText: 'Search here...',
+                      border: InputBorder.none,
+                    ),
+                    onFieldSubmitted: (_) => _handleSearch(),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.clear, color: Colors.black),
+                  onPressed: () {
+                    setState(() {
+                      _textController.clear();
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
-      // appBar: PreferredSize(
-
-        
-      //   preferredSize: const Size.fromHeight(80.0),
-      //   child: AppBar(
-      //      automaticallyImplyLeading: false, 
-      //     title: AnimSearchBar(
-      //       width: 400,
-      //       textController: _textController,
-      //       onSuffixTap: () {
-      //         setState(() {
-      //           _textController.clear();
-      //         });
-      //       },
-      //       rtl: true,
-      //       onSubmitted: (String value) {
-      //         // handle search query submission
-      //       },
-      //     ),
-      //   ),
-      // ),
-      body: SafeArea(
-        child: Center(
-          child: Text('Content goes here'),
+        body: const Center(
+          child: Text('Search for food items.'),
         ),
-      ),
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: Search(),
-  ));
 }

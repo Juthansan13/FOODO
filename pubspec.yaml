@@ -41,6 +41,16 @@ dependencies:
   google_maps_flutter: ^2.6.1
   geolocator: ^12.0.0
   image_picker: ^1.1.2
+
+  provider: ^6.1.2
+  flutter_svg: ^2.0.10+1
+  carousel_slider: ^4.2.1
+
+  cloud_firestore: ^5.3.0
+  firebase_storage: ^12.2.0
+  timeago: ^3.1.0
+  share_plus: ^6.3.1
+  
  # flutter_plugin_android_lifecycle: ^2.0.20
 
 
@@ -61,6 +71,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -77,8 +88,10 @@ flutter:
 
   assets:
     - assets/signin.png
-    - assets/siginup.png
+    - assets/signup.png
     - assets/avatar.png
+    - assets/image1/
+    - assets/image1/pic1/
 
 
 
@@ -110,3 +123,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: "AppIcon"
+  image_path: "assets/icons/FOODO2.png"
+  min_sdk_android: 21

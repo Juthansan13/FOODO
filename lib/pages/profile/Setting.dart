@@ -4,7 +4,7 @@ import 'package:firebase/signIn.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,36 +14,36 @@ class SettingsPage extends StatelessWidget {
         backgroundColor: primaryColor,
          automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context, 
                MaterialPageRoute(
-                  builder: (context) => ProfilePage(),
+                  builder: (context) => const ProfilePage(),
                 ),
               );
 
           },
         ),
-        title: Text('Settings',
+        title: const Text('Settings',
         style: TextStyle(color: Colors.white,),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _buildDarkModeOption(),
-            Divider(height: 32),
+            const Divider(height: 32),
             _buildLanguageOption(),
-            Divider(height: 32),
+            const Divider(height: 32),
             _buildNotificationOption(),
-            Divider(height: 32),
+            const Divider(height: 32),
             _buildChangeDetailsSection(),
-            Divider(height: 32),
+            const Divider(height: 32),
             _buildChangePasswordSection(),
-            Divider(height: 32),
+            const Divider(height: 32),
             _buildLogoutButton(context),
             _buildDeleteAccountButton(context),
           ],
@@ -57,7 +57,7 @@ class SettingsPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text('Dark Mode', style: TextStyle(fontSize: 18)),
+        const Text('Dark Mode', style: TextStyle(fontSize: 18)),
         Switch(
           value: false,
           onChanged: (bool value) {
@@ -72,9 +72,9 @@ class SettingsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Language', style: TextStyle(fontSize: 18)),
+        const Text('Language', style: TextStyle(fontSize: 18)),
         ListTile(
-          title: Text('English'),
+          title: const Text('English'),
           leading: Radio( 
             value: 'english',
             groupValue: 'language',
@@ -84,7 +84,7 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text('Tamil'),
+          title: const Text('Tamil'),
           leading: Radio(
             value: 'tamil',
             groupValue: 'language',
@@ -94,7 +94,7 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text('Sinhala'),
+          title: const Text('Sinhala'),
           leading: Radio(
             value: 'sinhala',
             groupValue: 'language',
@@ -111,16 +111,16 @@ class SettingsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Notifications', style: TextStyle(fontSize: 18)),
+        const Text('Notifications', style: TextStyle(fontSize: 18)),
         SwitchListTile(
-          title: Text('Donation Notifications'),
+          title: const Text('Donation Notifications'),
           value: true,
           onChanged: (bool value) {
             // Handle notification switch
           },
         ),
         SwitchListTile(
-          title: Text('Chat Messages'),
+          title: const Text('Chat Messages'),
           value: true,
           onChanged: (bool value) {
             // Handle notification switch
@@ -134,25 +134,25 @@ class SettingsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Change Details', style: TextStyle(fontSize: 18)),
-        TextField(
+        const Text('Change Details', style: TextStyle(fontSize: 18)),
+        const TextField(
           decoration: InputDecoration(labelText: 'Email'),
         ),
-        TextField(
+        const TextField(
           decoration: InputDecoration(labelText: 'Name'),
         ),
-        TextField(
+        const TextField(
           decoration: InputDecoration(labelText: 'Location'),
         ),
-        TextField(
+        const TextField(
           decoration: InputDecoration(labelText: 'Phone No'),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
             // Handle update details
           },
-          child: Text('Update Details'),
+          child: const Text('Update Details'),
         ),
       ],
     );
@@ -162,21 +162,21 @@ class SettingsPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Change Password', style: TextStyle(fontSize: 18)),
-        TextField(
+        const Text('Change Password', style: TextStyle(fontSize: 18)),
+        const TextField(
           decoration: InputDecoration(labelText: 'New Password'),
           obscureText: true,
         ),
-        TextField(
+        const TextField(
           decoration: InputDecoration(labelText: 'Confirm Password'),
           obscureText: true,
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
             // Handle change password
           },
-          child: Text('Change Password'),
+          child: const Text('Change Password'),
         ),
       ],
     );
@@ -190,11 +190,11 @@ class SettingsPage extends StatelessWidget {
       onPressed: () {
         // Handle logout
          Navigator.pop(context, 
-        MaterialPageRoute(builder: (context) => SigninScreen(),
+        MaterialPageRoute(builder: (context) => const SigninScreen(),
         ),
          );
       },
-      child: Text('Log Out'),
+      child: const Text('Log Out'),
     );
   }
 
@@ -204,7 +204,7 @@ class SettingsPage extends StatelessWidget {
         // Handle delete account
 
       },
-      child: Text(
+      child: const Text(
         'Delete Account',
         style: TextStyle(color: Colors.red),
       ),

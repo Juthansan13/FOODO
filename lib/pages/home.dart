@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:firebase/pages/Post.dart';
 import 'package:firebase/pages/DoHistory.dart';
@@ -7,23 +9,26 @@ import 'package:firebase/pages/Search.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
+  
 
   @override
   State<Home> createState() => _HomeState();
+  
 }
 
 class _HomeState extends State<Home> {
+  Color primaryColor = Colors.blue;
   int currentTab = 0;
   final List<Widget> screens = [
-    DashboardPage(),
-    DoHistory(),
-    ProfilePage(),
-    Search(),
-    PostPage(),
+    const DashboardPage(),
+    const DonationHistoryPage(),
+    const ProfilePage(),
+    const Search(),
+    const PostPage(),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = DashboardPage();
+  Widget currentScreen = const DashboardPage();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,7 @@ class _HomeState extends State<Home> {
       onWillPop: () async {
         if (currentScreen is! DashboardPage) {
           setState(() {
-            currentScreen = DashboardPage();
+            currentScreen = const DashboardPage();
             currentTab = 0;
           });
           return false;
@@ -39,127 +44,142 @@ class _HomeState extends State<Home> {
           return true;
         }
       },
+      //
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: PageStorage(
-          child: currentScreen,
           bucket: bucket,
+          child: currentScreen,
         ),
+        //
         floatingActionButton: currentScreen is! PostPage
             ? FloatingActionButton(
-                child: Icon(Icons.add),
-                shape: CircleBorder(),
-                backgroundColor: Colors.lightGreen,
+                shape: const CircleBorder(),
+                focusColor: Colors.white,
+                backgroundColor: primaryColor,
                 onPressed: () {
                   setState(() {
-                    currentScreen = PostPage();
+                    currentScreen = const PostPage();
+                    currentTab = 4;
                   });
                 },
+                child: const Icon(Icons.add),
               )
             : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: currentScreen is! PostPage
             ? BottomAppBar(
-                shape: CircularNotchedRectangle(),
+                shape: const CircularNotchedRectangle(),
+                height: 66,
+                color: Colors.white,
+              
                 notchMargin: 8,
                 child: Container(
-                  height: 60,
+                  
+                
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           MaterialButton(
-                            minWidth: 70,
-                            onPressed: () {
-                              setState(() {
-                                currentScreen = DashboardPage();
+                            minWidth: 40,
+                            onPressed: (){
+                               setState(() {
+                                currentScreen = const DashboardPage();
                                 currentTab = 0;
-                              });
+                            });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.home,
-                                  size: 30,
-                                  color: currentTab == 0
-                                      ? Colors.lightGreen
-                                      : Colors.grey,
+                                  color: currentTab == 0 ? primaryColor : Colors.grey,
                                 ),
+                                Text(
+                                  'Home',
+                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10, color: currentTab == 0? primaryColor:  Colors.grey),) 
                               ],
                             ),
+                            
                           ),
-                          MaterialButton(
-                            minWidth: 70,
-                            onPressed: () {
-                              setState(() {
-                                currentScreen = Search();
+                           MaterialButton(
+                            minWidth: 10,
+                            onPressed: (){
+                               setState(() {
+                                currentScreen = const Search();
                                 currentTab = 1;
-                              });
+                            });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.search,
-                                  size: 30,
-                                  color: currentTab == 1
-                                      ? Colors.lightGreen
-                                      : Colors.grey,
+                                  color: currentTab == 1 ? primaryColor : Colors.grey,
                                 ),
+                                Text(
+                                  'Search',
+                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 1? primaryColor :  Colors.grey),) 
                               ],
                             ),
+                            
                           ),
-                        ],
+                        ]
                       ),
+                     //SizedBox(width: 10),
+                      //Row right
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           MaterialButton(
-                            minWidth: 70,
-                            onPressed: () {
-                              setState(() {
-                                currentScreen = DoHistory();
+                            minWidth: 40,
+                            onPressed: (){
+                               setState(() {
+                                currentScreen = DonationHistoryPage();
                                 currentTab = 2;
-                              });
+                            });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
                                   Icons.history,
-                                  size: 30,
-                                  color: currentTab == 2
-                                      ? Colors.lightGreen
-                                      : Colors.grey,
+                                  color: currentTab == 2 ? primaryColor : Colors.grey,
                                 ),
+                                Text(
+                                  'History',
+                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 2? primaryColor :  Colors.grey),) 
                               ],
                             ),
+                          
+                            
                           ),
-                          MaterialButton(
-                            minWidth: 70,
-                            onPressed: () {
-                              setState(() {
-                                currentScreen = ProfilePage();
+                           MaterialButton(
+                            minWidth: 40,
+                            onPressed: (){
+                               setState(() {
+                                currentScreen = const ProfilePage();
                                 currentTab = 3;
-                              });
+                            });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.person,
-                                  size: 30,
-                                  color: currentTab == 3
-                                      ? Colors.lightGreen
-                                      : Colors.grey,
+                                  Icons.account_circle,
+                                  color: currentTab == 3 ? primaryColor : Colors.grey,
                                 ),
+                                Text(
+                                  'Account',
+                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 3? primaryColor :  Colors.grey),) 
                               ],
                             ),
+                            
                           ),
-                        ],
+                        ]
                       ),
                     ],
                   ),
@@ -169,4 +189,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+
 }
+          
+     

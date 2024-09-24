@@ -1,32 +1,98 @@
-import 'package:firebase/color.dart';
+import 'package:firebase/pages/dashbord/Foodpage.dart';
+import 'package:firebase/pages/dashbord/product.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DoHistory extends StatefulWidget {
-  const DoHistory({super.key});
+class DonationHistoryPage extends StatefulWidget {
+  const DonationHistoryPage({super.key});
 
   @override
-  State<DoHistory> createState() => _DoHistoryState();
+  State<DonationHistoryPage> createState() => _DoHistoryState();
 }
 
-class _DoHistoryState extends State<DoHistory> {
+class _DoHistoryState extends State<DonationHistoryPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _deleteDonation(String donationId) async {
+    await _firestore.collection('donations').doc(donationId).delete();
+  }
+
+  void _editDonation(String donationId, Map<String, dynamic> currentData) {
+    // Navigate to the edit page, passing the current data
+  }
+
   @override
   Widget build(BuildContext context) {
-     return SafeArea(
+    return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: primaryColor, // Set the background color here
+          backgroundColor: Colors.blue,
           automaticallyImplyLeading: false,
-          centerTitle: true, // Center the title
+          centerTitle: true,
           title: const Text(
             'Donation History',
-            style: TextStyle(
-              color: Colors.white, // Set the text color here if needed
-            ),
+            style: TextStyle(color: Colors.white),
           ),
         ),
-      body:Center(child: Text('Donation HISTORY ',style: TextStyle(fontSize: 40))),
-    ),
-     );
-     
+        body: StreamBuilder<QuerySnapshot>(
+          stream: _firestore.collection('donations').orderBy('timestamp', descending: true).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(
+                child: Text('No donations found', style: TextStyle(fontSize: 20)),
+              );
+            }
+
+            return ListView(
+              children: snapshot.data!.docs.map((doc) {
+                Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+                return ListTile(
+                  leading: (data['images'] != null && data['images'].isNotEmpty)
+                      ? Image.network(data['images'][0], width: 50, height: 50, fit: BoxFit.cover)
+                      : null,
+                  title: Text(data['item_details'] ?? 'No title'),
+                  subtitle: Text('Pickup: ${data['pickup_date'] ?? 'No date'} at ${data['pickup_time'] ?? 'No time'}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () => _editDonation(doc.id, data),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _deleteDonation(doc.id),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    try {
+                      // Convert Firestore data to a Product object
+                      Product product = Product.fromFirestore(doc);
+
+                      // Navigate to the Foodpage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Foodpage(product: product),
+                        ),
+                      );
+                    } catch (e) {
+                      // Handle the error, such as showing an error message
+                      print('Error converting data to Product: $e');
+                    }
+                  },
+                );
+              }).toList(),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
