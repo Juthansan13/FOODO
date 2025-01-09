@@ -1,11 +1,11 @@
-import 'package:firebase/Account/AccountScreen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase/pages/home.dart';
 import 'package:firebase/signUp.dart';
 import 'package:firebase/color.dart';
 import 'package:firebase/authmanagement/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
@@ -21,7 +21,6 @@ class _SigninScreenState extends State<SigninScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   bool _obscureText = true;
   String? errorMessage;

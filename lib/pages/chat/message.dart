@@ -2,9 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/pages/chat/display.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'message.dart';
 
 class ChatPage extends StatefulWidget {
   final String email;
@@ -19,7 +17,6 @@ class _ChatPageState extends State<ChatPage> {
   _ChatPageState({required this.email});
 
   final FirebaseFirestore fs = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController messageController = TextEditingController();
 
   @override

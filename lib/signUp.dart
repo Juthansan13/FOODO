@@ -19,7 +19,6 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
     final FirebaseAuth _auth = FirebaseAuth.instance;
-final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _obscureTextPassword = true;
   bool _obscureTextConfirmPassword = true;
   String? errorMessage;

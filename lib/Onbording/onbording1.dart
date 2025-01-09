@@ -1,9 +1,7 @@
-import 'package:firebase/pages/home.dart';
+
 import 'package:flutter/material.dart';
 import 'details.dart'; // Ensure this path is correct.
 import 'package:firebase/color.dart';
-import 'package:firebase/Onbording/onbording1.dart';
-import 'package:firebase/Onbording/details.dart';
 import 'package:firebase/signIn.dart';
 
 

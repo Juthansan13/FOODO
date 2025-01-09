@@ -1,13 +1,9 @@
 import 'package:firebase/Account/AccountInformation.dart';
-import 'package:firebase/Account/AddressList.dart';
 import 'package:firebase/Account/Setting.dart';
 import 'package:firebase/Onbording/onbording1.dart';
 import 'package:firebase/color.dart';
 import 'package:firebase/pages/DoHistory.dart';
 import 'package:firebase/signIn.dart';
-import 'package:firebase/signUp.dart';
-//import 'package:admin/account_screen/account_information.dart';
-//import 'package:admin/account_screen/address_book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +23,6 @@ class _AccountScreenState extends State<AccountScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   User? _user;
-  String? _name;
   String? _email;
   String? _profileImageUrl;
   String name = "";
@@ -47,7 +42,6 @@ class _AccountScreenState extends State<AccountScreen> {
 
         if (userDoc.exists) {
           setState(() {
-            _name = userDoc['name'];
             _email = userDoc['email'];
             _profileImageUrl = userDoc['profileImage'];
           });
@@ -60,7 +54,6 @@ class _AccountScreenState extends State<AccountScreen> {
           });
 
           setState(() {
-            _name = _user!.displayName ?? 'No name';
             _email = _user!.email;
             _profileImageUrl = _user!.photoURL ?? '';
           });
