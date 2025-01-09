@@ -1,6 +1,6 @@
+import 'package:firebase/Onbording/onbording1.dart';
 import 'package:firebase/firebase_options.dart';
 import 'package:firebase/pages/Dashboard.dart';
-import 'package:firebase/signIn.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       
       routes:{
-        "/": (context) => const SigninScreen(),
+        "/": (context) => const Onboarding(),
         "Homepage": (context) => const DashboardPage(),
        
       },

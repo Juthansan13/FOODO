@@ -1,5 +1,6 @@
 import 'package:firebase/pages/Dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase/color.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -34,7 +35,7 @@ class _SearchState extends State<Search> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: primaryColor,
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: Container(

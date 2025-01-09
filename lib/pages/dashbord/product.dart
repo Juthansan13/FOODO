@@ -11,7 +11,10 @@ class Product {
   final String image; // First image as the main image
   final Color color; // Color for UI representation
   final int id; // Unique identifier
-  final DateTime timestamp; // Timestamp as a DateTime object
+  final DateTime timestamp;
+  final int amount; // Timestamp as a DateTime object
+  final String type;
+  final String email;
 
   Product({
     required this.title,
@@ -23,6 +26,9 @@ class Product {
     required this.color,
     required this.id,
     required this.timestamp,
+    required this.amount,
+    required this.type,
+    required this.email,
   });
 
   // Factory constructor to create a Product from Firestore data
@@ -30,6 +36,7 @@ class Product {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     return Product(
+      email: data['user_email'] ?? 'no name',
       title: data['item_details'] ?? 'No Title',
       description: (data['num_persons'] as int?)?.toString() ?? 'No Description',
       location: data['pickup_location'] ?? '',
@@ -39,8 +46,12 @@ class Product {
       color: Colors.pink, // Use a default or dynamic color if needed
       id: int.tryParse(data['id']?.toString() ?? '0') ?? 0,
       timestamp: (data['timestamp'] as Timestamp?)?.toDate() ?? DateTime.now(), // Handling timestamp properly
+      amount: int.tryParse(data['amount']?.toString() ?? '0') ?? 0,
+      type: data['type'] ?? 'No type',
     );
   }
+
+  //get amount => null;
 
   // Method to calculate how long ago the donation was made
   String timeAgo() {

@@ -1,4 +1,7 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "cSpell.words": [
+        "buildscript"
+    ]
 }

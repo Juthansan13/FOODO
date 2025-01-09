@@ -2,6 +2,7 @@ import 'package:firebase/pages/dashbord/Foodpage.dart';
 import 'package:firebase/pages/dashbord/product.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/color.dart';
 
 class DonationHistoryPage extends StatefulWidget {
   const DonationHistoryPage({super.key});
@@ -26,7 +27,7 @@ class _DoHistoryState extends State<DonationHistoryPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue,
+          backgroundColor: primaryColor,
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
@@ -61,11 +62,11 @@ class _DoHistoryState extends State<DonationHistoryPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.edit, color: Colors.blue),
+                        icon: const Icon(Icons.edit, color: Colors.blue),
                         onPressed: () => _editDonation(doc.id, data),
                       ),
                       IconButton(
-                        icon: Icon(Icons.delete, color: Colors.red),
+                        icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: () => _deleteDonation(doc.id),
                       ),
                     ],

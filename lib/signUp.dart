@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase/pages/home.dart';
@@ -17,6 +18,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _obscureTextPassword = true;
   bool _obscureTextConfirmPassword = true;
   String? errorMessage;
@@ -83,10 +86,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(
-                        height: 150,
-                        child: Image.asset("assets/signup.png"), // Ensure the image path is correct
-                      ),
+                     const SizedBox(height: 10),
+                  Image.asset(
+                    'assets/FOODOicon.png', // Your app logo
+                    height: 100,
+                    width: 100,
+                  ),
+                  const SizedBox(height: 20),
                       const Text(
                         "SIGN UP",
                         style: TextStyle(
@@ -95,9 +101,10 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: TextFormField(
+                   
+                          SizedBox(
+                             width: 250,
+                      child:TextFormField(
                           controller: _emailController,
                           validator: (email) {
                             if (email == null || email.isEmpty) {
@@ -117,12 +124,13 @@ class _SignupScreenState extends State<SignupScreen> {
                             prefixIcon: Icon(Icons.email, color: primaryColor),
                             labelText: "Email Address",
                             labelStyle:
-                                TextStyle(color: primaryColor, fontSize: 16),
+                                TextStyle(color: primaryColor, fontSize: 14),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
+                          
+                      SizedBox(
+                             width: 250,
                         child: TextFormField(
                           controller: _passwordController,
                           obscureText: _obscureTextPassword,
@@ -155,12 +163,13 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             labelText: "Password",
                             labelStyle:
-                                const TextStyle(color: primaryColor, fontSize: 16),
+                                const TextStyle(color: primaryColor, fontSize: 14),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
+                     SizedBox(
+                             width: 250,
+                      
                         child: TextFormField(
                           controller: _confirmPasswordController,
                           obscureText: _obscureTextConfirmPassword,
@@ -195,7 +204,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             labelText: "Confirm Password",
                             labelStyle:
-                                const TextStyle(color: primaryColor, fontSize: 16),
+                                const TextStyle(color: primaryColor, fontSize: 14),
                           ),
                         ),
                       ),
@@ -211,8 +220,8 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 30.0),
                           child: SizedBox(
-                            height: 50.0,
-                            width: 300,
+                            height: 45,
+                            width: 175,
                             child: TextButton(
                               style: TextButton.styleFrom(
                                 backgroundColor: primaryColor,
@@ -226,18 +235,37 @@ class _SignupScreenState extends State<SignupScreen> {
                                 style: TextStyle(
                                   letterSpacing: 0.5,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                                  fontSize: 18,
                                   color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
-                        ),
+                           ),
                       ),
+                          //const SizedBox(height: 10),
+                          const Text("Or sign up with"),
+                          const SizedBox(height: 10),
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _googleSignInButton(),
+                                const SizedBox(width: 20),
+                                
+                              ],
+                            ),
+                          ),
+                  
+                       
+                      //sigin option google and facebook 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Already have an account?"),
+                          const Text("Already have an account?",
+                          style: TextStyle(
+                                 fontSize: 12),
+                                  ),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
@@ -250,7 +278,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             child: const Text(
                               "Sign In",
                               style: TextStyle(
-                                  color: primaryColor, fontSize: 16),
+                                  color: primaryColor, fontSize: 12),
                             ),
                           ),
                         ],
@@ -264,5 +292,76 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
+  }
+  Widget _googleSignInButton() {
+    return Center(
+      child: SizedBox(
+        height: 50,
+        width: 250,
+        child: ElevatedButton.icon(
+          
+          icon: Image.asset(
+            "assets/google.png",
+            height: 24,
+            width: 24,
+          ),
+          label: const Text(
+            "Continue with Google",
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            elevation: 0,
+            iconColor:  Colors.white,
+          shadowColor:  Colors.black,
+            side: const BorderSide(color: Colors.black)
+          ),
+          onPressed: _handleGoogleSignIn,
+        ),
+      ),
+    );
+  }
+  
+
+  void _handleGoogleSignIn() async {
+    try {
+      GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+      UserCredential userCredential = await _auth.signInWithProvider(googleAuthProvider);
+
+      // Get user from the result
+      User user = userCredential.user!;
+
+      // Store user data in Firestore
+      /*
+      await _firestore.collection('Users').doc(user.uid).set({
+        'name': user.displayName,
+        'email': user.email,
+        'profileImage': user.photoURL,
+      });*
+      */
+      await FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+  'name': user.displayName ?? 'No Name',
+  'email': user.email ?? 'No Email',
+  'profileImage': user.photoURL ?? '',
+});
+
+
+      
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const Home()),
+      );
+      
+      Navigator.pop(context);
+    } catch (error) {
+      print("Error during Google sign-in: $error");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $error')),
+      );
+    }
   }
 }

@@ -8,18 +8,25 @@ class DonationDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Safely access the 'images' key and check if it's not null or empty
+    final images = donation['images'];
+    final itemDetails = donation['item_details'] ?? 'No item details available';
+    final numPersons = donation['num_persons'] ?? 'N/A';
+    final pickupLocation = donation['pickup_location'] ?? 'Not provided';
+    final pickupDate = donation['pickup_date'] ?? 'Not specified';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(donation['item_details']),
+        title: Text(itemDetails), // Display item details as the title
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Display images using CarouselSlider if there are multiple images
-            if (donation['images'] != null && donation['images'].isNotEmpty)
+            if (images != null && images.isNotEmpty)
               CarouselSlider(
-                items: donation['images'].map<Widget>((imageUrl) {
+                items: images.map<Widget>((imageUrl) {
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
@@ -43,7 +50,7 @@ class DonationDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Item Details: ${donation['item_details']}',
+                'Item Details: $itemDetails',
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
@@ -52,7 +59,7 @@ class DonationDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Serves: ${donation['num_persons']} persons',
+                'Serves: $numPersons persons',
                 style: const TextStyle(fontSize: 16),
               ),
             ),
@@ -61,7 +68,7 @@ class DonationDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Pickup Location: ${donation['pickup_location']}',
+                'Pickup Location: $pickupLocation',
                 style: const TextStyle(fontSize: 16),
               ),
             ),
@@ -70,14 +77,7 @@ class DonationDetailPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'Pickup Date: ${donation['pickup_date']}',
-                style: const TextStyle(fontSize: 16),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Pickup Time: ${donation['pickup_time']}',
+                'Pickup Date: $pickupDate',
                 style: const TextStyle(fontSize: 16),
               ),
             ),

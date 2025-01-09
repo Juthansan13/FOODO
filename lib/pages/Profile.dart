@@ -1,10 +1,11 @@
 import 'package:firebase/color.dart';
 import 'package:firebase/pages/DoHistory.dart';
 import 'package:firebase/pages/profile/EditProfilePage.dart';
-import 'package:firebase/pages/profile/Setting.dart';
+import 'package:firebase/Account/Setting.dart';
 import 'package:firebase/signIn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // Add this import for caching images
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -15,8 +16,9 @@ class ProfilePage extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
 
     // Fallback to 'John Doe' if the user is null or no display name is available
-    String displayName = user?.displayName ?? 'Juthan';
+    String displayName = user?.displayName ?? '';
     String email = user?.email ?? 'No Email';
+    String profileImageUrl = user?.photoURL ?? ''; // Use the user's photoURL if available, otherwise fallback to the default avatar.
 
     return SafeArea(
       child: Scaffold(
@@ -45,9 +47,12 @@ class ProfilePage extends StatelessWidget {
                 },
                 child: Column(
                   children: <Widget>[
-                    const CircleAvatar(
+                    // Check if the user's profile image URL exists, if not fallback to a default image
+                    CircleAvatar(
                       radius: 60,
-                      backgroundImage: AssetImage('assets/avatar.png'),
+                      backgroundImage: profileImageUrl.startsWith('http')
+                          ? CachedNetworkImageProvider(profileImageUrl) // Use cached image if the URL is valid
+                          : const AssetImage('') as ImageProvider, // Default image
                     ),
                     const SizedBox(height: 16),
                     Text(

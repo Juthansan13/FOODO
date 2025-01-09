@@ -1,11 +1,13 @@
 
 
+import 'package:firebase/Account/AccountScreen.dart';
+import 'package:firebase/pages/chat/message.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/pages/Post.dart';
 import 'package:firebase/pages/DoHistory.dart';
 import 'package:firebase/pages/Dashboard.dart';
-import 'package:firebase/pages/Profile.dart';
 import 'package:firebase/pages/Search.dart';
+import 'package:firebase/color.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,12 +19,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Color primaryColor = Colors.blue;
+
   int currentTab = 0;
   final List<Widget> screens = [
     const DashboardPage(),
     const DonationHistoryPage(),
-    const ProfilePage(),
+     AccountScreen(),
     const Search(),
     const PostPage(),
   ];
@@ -138,7 +140,7 @@ class _HomeState extends State<Home> {
                             minWidth: 40,
                             onPressed: (){
                                setState(() {
-                                currentScreen = DonationHistoryPage();
+                                currentScreen = const ChatPage(email: '',);
                                 currentTab = 2;
                             });
                             },
@@ -146,11 +148,11 @@ class _HomeState extends State<Home> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.history,
+                                  Icons.chat,
                                   color: currentTab == 2 ? primaryColor : Colors.grey,
                                 ),
                                 Text(
-                                  'History',
+                                  'Message',
                                   style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 2? primaryColor :  Colors.grey),) 
                               ],
                             ),
@@ -161,7 +163,7 @@ class _HomeState extends State<Home> {
                             minWidth: 40,
                             onPressed: (){
                                setState(() {
-                                currentScreen = const ProfilePage();
+                                currentScreen = AccountScreen();
                                 currentTab = 3;
                             });
                             },
