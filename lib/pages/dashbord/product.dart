@@ -15,6 +15,7 @@ class Product {
   final int amount; // Timestamp as a DateTime object
   final String type;
   final String email;
+  final String name;
 
   Product({
     required this.title,
@@ -29,6 +30,7 @@ class Product {
     required this.amount,
     required this.type,
     required this.email,
+    required this.name,
   });
 
   // Factory constructor to create a Product from Firestore data
@@ -36,6 +38,7 @@ class Product {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
     return Product(
+      name: data ['user_name'] ?? 'no name',
       email: data['user_email'] ?? 'no name',
       title: data['item_details'] ?? 'No Title',
       description: (data['num_persons'] as int?)?.toString() ?? 'No Description',

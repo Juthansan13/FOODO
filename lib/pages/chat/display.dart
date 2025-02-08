@@ -150,7 +150,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   offset: const Offset(0, -1),
                 ),
               ],
-            ),/*
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -166,7 +166,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   onPressed: () {},
                 ),
               ],
-            ),*/
+            ),
           ),
         ],
       ),

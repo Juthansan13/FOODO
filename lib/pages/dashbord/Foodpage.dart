@@ -111,7 +111,7 @@ class _FoodpageState extends State<Foodpage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                       _buildInfoRow(Icons.person_2, "", widget.product.email),
+                       _buildInfoRow(Icons.person_2, "", widget.product.email), //name 
                       const SizedBox(height: 20),
                       _buildInfoRow(Icons.person_2, "Quantity", widget.product.description),
                       const SizedBox(height: 20),

@@ -142,7 +142,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 if(_user != null){
                   Navigator.push(
                   context, MaterialPageRoute(
-                    builder: (context)=>AccountInformationPage()
+                    builder: (context)=>const AccountInformationPage()
                   )
                 );
                 }else{

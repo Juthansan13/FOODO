@@ -1,7 +1,7 @@
 
 
 import 'package:firebase/Account/AccountScreen.dart';
-import 'package:firebase/pages/chat/message.dart';
+import 'package:firebase/pages/chat/display.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase/pages/Post.dart';
 import 'package:firebase/pages/DoHistory.dart';
@@ -17,16 +17,15 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
   
 }
-
 class _HomeState extends State<Home> {
-
   int currentTab = 0;
   final List<Widget> screens = [
     const DashboardPage(),
     const DonationHistoryPage(),
-     AccountScreen(),
+    const AccountScreen(),
     const Search(),
     const PostPage(),
+    const MessageScreen(email: '',),
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -46,15 +45,13 @@ class _HomeState extends State<Home> {
           return true;
         }
       },
-      //
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: PageStorage(
           bucket: bucket,
           child: currentScreen,
         ),
-        //
-        floatingActionButton: currentScreen is! PostPage
+        floatingActionButton: currentScreen is! PostPage && currentScreen is! MessageScreen
             ? FloatingActionButton(
                 shape: const CircleBorder(),
                 focusColor: Colors.white,
@@ -69,16 +66,13 @@ class _HomeState extends State<Home> {
               )
             : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: currentScreen is! PostPage
+        bottomNavigationBar: currentScreen is! PostPage && currentScreen is! MessageScreen
             ? BottomAppBar(
                 shape: const CircularNotchedRectangle(),
                 height: 66,
                 color: Colors.white,
-              
                 notchMargin: 8,
                 child: Container(
-                  
-                
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -87,11 +81,11 @@ class _HomeState extends State<Home> {
                         children: <Widget>[
                           MaterialButton(
                             minWidth: 40,
-                            onPressed: (){
-                               setState(() {
+                            onPressed: () {
+                              setState(() {
                                 currentScreen = const DashboardPage();
                                 currentTab = 0;
-                            });
+                              });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -102,18 +96,21 @@ class _HomeState extends State<Home> {
                                 ),
                                 Text(
                                   'Home',
-                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10, color: currentTab == 0? primaryColor:  Colors.grey),) 
+                                  style: TextStyle(
+                                    fontSize: currentTab == 0 ? 10 : 10,
+                                    color: currentTab == 0 ? primaryColor : Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
-                            
                           ),
-                           MaterialButton(
+                          MaterialButton(
                             minWidth: 10,
-                            onPressed: (){
-                               setState(() {
+                            onPressed: () {
+                              setState(() {
                                 currentScreen = const Search();
                                 currentTab = 1;
-                            });
+                              });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -124,25 +121,26 @@ class _HomeState extends State<Home> {
                                 ),
                                 Text(
                                   'Search',
-                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 1? primaryColor :  Colors.grey),) 
+                                  style: TextStyle(
+                                    fontSize: currentTab == 0 ? 10 : 10,
+                                    color: currentTab == 1 ? primaryColor : Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
-                            
                           ),
-                        ]
+                        ],
                       ),
-                     //SizedBox(width: 10),
-                      //Row right
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           MaterialButton(
                             minWidth: 40,
-                            onPressed: (){
-                               setState(() {
-                                currentScreen = const ChatPage(email: '',);
+                            onPressed: () {
+                              setState(() {
+                                currentScreen = const MessageScreen(email: '',);
                                 currentTab = 2;
-                            });
+                              });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -153,19 +151,21 @@ class _HomeState extends State<Home> {
                                 ),
                                 Text(
                                   'Message',
-                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 2? primaryColor :  Colors.grey),) 
+                                  style: TextStyle(
+                                    fontSize: currentTab == 0 ? 10 : 10,
+                                    color: currentTab == 2 ? primaryColor : Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
-                          
-                            
                           ),
-                           MaterialButton(
+                          MaterialButton(
                             minWidth: 40,
-                            onPressed: (){
-                               setState(() {
+                            onPressed: () {
+                              setState(() {
                                 currentScreen = AccountScreen();
                                 currentTab = 3;
-                            });
+                              });
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -176,12 +176,15 @@ class _HomeState extends State<Home> {
                                 ),
                                 Text(
                                   'Account',
-                                  style: TextStyle( fontSize: currentTab == 0 ? 10 : 10,color: currentTab == 3? primaryColor :  Colors.grey),) 
+                                  style: TextStyle(
+                                    fontSize: currentTab == 0 ? 10 : 10,
+                                    color: currentTab == 3 ? primaryColor : Colors.grey,
+                                  ),
+                                ),
                               ],
                             ),
-                            
                           ),
-                        ]
+                        ],
                       ),
                     ],
                   ),
@@ -191,7 +194,4 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
 }
-          
-     

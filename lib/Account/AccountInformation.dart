@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ class AccountInformationPage extends StatefulWidget {
   const AccountInformationPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AccountInformationPageState createState() => _AccountInformationPageState();
 }
 
@@ -17,31 +17,32 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
   String? gender;
   DateTime? selectedBirthday;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance; // Firebase Auth instance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   User? _user;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    _getCurrentUser(); 
+    _getCurrentUser();
   }
 
   void _getCurrentUser() {
-    _user = _auth.currentUser; 
+    _user = _auth.currentUser;
     if (_user != null) {
-      email = _user!.email!;
+      email = _user!.email ?? '';
       _fetchUserDetails();
+    } else {
+      print('No user is currently signed in.');
     }
   }
 
   Future<void> _fetchUserDetails() async {
     if (_user != null) {
       try {
-        // Use uid as the document ID to fetch the user details
         DocumentSnapshot userDetailsDoc = await _firestore
             .collection('Account Information')
-            .doc(_user!.uid) // Use uid as document ID
+            .doc(_user!.uid)
             .get();
 
         if (userDetailsDoc.exists) {
@@ -50,28 +51,35 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
           if (userData != null) {
             setState(() {
               name = userData['name'] ?? '';
-              email = userData['email'] ?? _user!.email!;
+              email = userData['email'] ?? _user!.email ?? '';
               gender = userData['gender'] ?? '';
               selectedBirthday = (userData['birthday'] as Timestamp?)?.toDate();
               mobile = userData['mobile'] ?? '';
             });
+          } else {
+            print('User data is null.');
           }
+        } else {
+          print('User document does not exist.');
         }
       } catch (e) {
         print('Error fetching user details: $e');
       }
+    } else {
+      print('User is null.');
     }
   }
 
   Future<void> _uploadUserData(Map<String, dynamic> data) async {
     if (_user != null) {
       try {
-        // Use uid as the document ID to save the user details
         await _firestore.collection('Account Information').doc(_user!.uid).set(data, SetOptions(merge: true));
         print('User data uploaded successfully');
       } catch (e) {
         print('Error uploading user data: $e');
       }
+    } else {
+      print('User is null.');
     }
   }
 
@@ -79,9 +87,11 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     if (name.isNotEmpty) {
       _uploadUserData({
         'name': name,
-        'email': email, // Save email as a field
+        'email': email,
       });
       Navigator.pop(context);
+    } else {
+      print('Name is empty.');
     }
   }
 
@@ -106,10 +116,10 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 234, 234, 234),
       appBar: AppBar(
-        title: const Text('Account Information'), 
+        title: const Text('Account Information'),
       ),
       body: Column(
-        children: [ 
+        children: [
           Padding(
             padding: const EdgeInsets.only(top: 8, bottom: 8),
             child: Container(
@@ -127,7 +137,7 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                           name,
                           style: const TextStyle(
                             fontSize: 15,
-                            color: Colors.grey
+                            color: Colors.grey,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -206,10 +216,10 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                      gender ?? 'Not set',
+                        gender ?? 'Not set',
                         style: const TextStyle(
                           color: Colors.grey,
-                          fontSize: 15
+                          fontSize: 15,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -225,9 +235,9 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        selectedBirthday != null 
-                            ? "${selectedBirthday!.year}-${selectedBirthday!.month.toString().padLeft(2, '0')}-${selectedBirthday!.day.toString().padLeft(2, '0')}" 
-                            : '', 
+                        selectedBirthday != null
+                            ? "${selectedBirthday!.year}-${selectedBirthday!.month.toString().padLeft(2, '0')}-${selectedBirthday!.day.toString().padLeft(2, '0')}"
+                            : '',
                         style: const TextStyle(
                           fontSize: 15,
                           color: Colors.grey,
@@ -246,6 +256,8 @@ class _AccountInformationPageState extends State<AccountInformationPage> {
       ),
     );
   }
+
+ 
 
   void _openFullNameModal(BuildContext context) {
     TextEditingController nameController = TextEditingController(text: name);

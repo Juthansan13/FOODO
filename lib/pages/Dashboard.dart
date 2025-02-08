@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/pages/dashbord/Foodpage.dart';
 import 'package:firebase/pages/dashbord/product.dart';
-import 'package:firebase/pages/dashbord/filter.dart';
 import 'package:firebase/color.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -19,31 +18,8 @@ class DashboardPage extends StatelessWidget {
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: searchQuery != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      searchQuery!,
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.cancel, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pop(context); // Go back to Search page
-                      },
-                    ),
-                  ],
-                )
-              : const Text(
-                  'FOODO',
-                  style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              ? _buildSearchAppBar(context, searchQuery!)
+              : _buildDefaultAppBar(),
         ),
         body: Column(
           children: [
@@ -63,34 +39,17 @@ class DashboardPage extends StatelessWidget {
                     context,
                     Icons.free_breakfast,
                     "Free",
-                    () {
-                      // Navigate to the Free Products Page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FreeProductsPage(searchQuery: searchQuery),
-                        ),
-                      );
-                    },
+                    () => _navigateToFreeProductsPage(context),
                   ),
                   _buildActionButton(
                     context,
                     Icons.shopping_cart,
                     "Buy",
-                    () {
-                      // Navigate to the Buy Products Page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BuyProductsPage(searchQuery: searchQuery),
-                        ),
-                      );
-                    },
+                    () => _navigateToBuyProductsPage(context),
                   ),
                 ],
               ),
             ),
-
             // Main content below buttons
             Expanded(
               child: Padding(
@@ -212,7 +171,6 @@ class DashboardPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(top: 0, left: 4, bottom: 0),
                                 child: Container(
@@ -228,7 +186,6 @@ class DashboardPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-
                               Padding(
                                 padding: const EdgeInsets.only(top: 0, right: 4, bottom: 2),
                                 child: Container(
@@ -259,27 +216,77 @@ class DashboardPage extends StatelessWidget {
     );
   }
 
-  /// Fixed: Accepts `onPressed` parameter to make buttons functional.
-  Widget _buildActionButton(
-      BuildContext context, IconData icon, String label, VoidCallback onPressed) {
-    return ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, color: primaryColor),
-      label: Text(
-        label,
-        style: const TextStyle(color: Colors.black),
-      ),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+  Widget _buildSearchAppBar(BuildContext context, String query) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          query,
+          style: const TextStyle(
+            color: Colors.white,
+          ),
         ),
+        IconButton(
+          icon: const Icon(Icons.cancel, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context); // Go back to Search page
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDefaultAppBar() {
+    return const Text(
+      'FOODO',
+      style: TextStyle(
+        color: Colors.white,
+        letterSpacing: 2,
+        fontWeight: FontWeight.bold,
       ),
     );
   }
-/*
-  /// Dummy implementation for showing a filter modal.
+
+  Widget _buildActionButton(
+    BuildContext context,
+    IconData icon,
+    String label,
+    VoidCallback onPressed,
+  ) {
+    return ElevatedButton.icon(
+      icon: Icon(icon, color: primaryColor),
+      label: Text(
+        label,
+        style: const TextStyle(color: primaryColor),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      onPressed: onPressed,
+    );
+  }
+
+  void _navigateToFreeProductsPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FreeProductsPage(searchQuery: searchQuery),
+      ),
+    );
+  }
+
+  void _navigateToBuyProductsPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BuyProductsPage(searchQuery: searchQuery),
+      ),
+    );
+  }
+
   void showFoodFilterSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -287,7 +294,7 @@ class DashboardPage extends StatelessWidget {
         child: Text("Filter options go here"),
       ),
     );
-  }*/
+  }
 }
 
 // Free Products Page
@@ -517,7 +524,6 @@ class BuyProductsPage extends StatelessWidget {
               final product = Product.fromFirestore(donations[index]);
 
               return Container(
-                
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(4),
